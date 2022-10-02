@@ -1,2 +1,2 @@
-# -TimetableHelper-server
+# TimetableHelper-server
  TimetableHelper-server
