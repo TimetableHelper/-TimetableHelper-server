@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sido.TimetableforHongikStudent.service.StudentService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 
 @RestController
@@ -22,16 +23,23 @@ public class StudentApiController {
 
     @PostMapping("/api/students")
     public CreateStudentResponse saveStudent(@RequestBody @Valid CreateStudentRequest request){
-        Student student = new Student();
-        student.setName(request.getName());
+        Student student = Student.createStudent(request.getName(),
+                request.getPassword(),request.getMajor(),request.getGrade());
+
         Long id = studentService.join(student);
         return new CreateStudentResponse(id);
     }
 
-    // DTO 패키지 생성.
+    // DTO 패키지 생성 해야함.
     @Data
     static class CreateStudentRequest{
-        public String name;
+        @NotEmpty
+        private String name;
+        @NotEmpty
+        private String password;
+
+        private String major;
+        private int grade;
     }
 
 
@@ -41,6 +49,8 @@ public class StudentApiController {
         public CreateStudentResponse(Long id){
             this.id=id;
         }
+
+
     }
 
 }

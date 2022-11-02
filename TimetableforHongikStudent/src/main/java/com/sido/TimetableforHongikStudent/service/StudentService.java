@@ -22,8 +22,17 @@ public class StudentService {
 
     @Transactional
     public Long join(Student student){
+        validateDuplicateStudent(student);
         studentRepository.save(student);
         return student.getId();
+    }
+
+    //학생 중복 처리
+    private void validateDuplicateStudent(Student student){
+        List<Student> findStudents = studentRepository.findByName(student.getName());
+        if(!findStudents.isEmpty()){
+            throw new IllegalStateException("이미 존재하는 학생입니다.");
+        }
     }
 
     // 학생 전체 조회
