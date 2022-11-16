@@ -18,6 +18,14 @@ public class StudentRepository {
     public void save(Student student){
         em.persist(student);
     }
+
+    // 진영 추가
+    public Student findByEmail(String emailParam) {
+        Student student = em.createQuery("select s from Student s where s.email=:email", Student.class)
+                .setParameter("email", emailParam)
+                .getSingleResult();
+        return student;
+    }
     // 단건 조회
     public Student findOne(Long id){
         return em.find(Student.class,id);
